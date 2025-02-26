@@ -64,8 +64,9 @@ cargo build --target x86_64-apple-darwin --package "${PACKAGE_NAME}" --locked --
 
 echo "▸ Consolidating the headers and modulemaps for XCFramework generation"
 mkdir -p "${BUILD_FOLDER}/includes"
+mkdir -p "${BUILD_FOLDER}/includes/yniffiFFI"
 cp "${SWIFT_FOLDER}/scaffold/yniffiFFI.h" "${BUILD_FOLDER}/includes"
-cp "${SWIFT_FOLDER}/scaffold/yniffiFFI.modulemap" "${BUILD_FOLDER}/includes/module.modulemap"
+cp "${SWIFT_FOLDER}/scaffold/yniffiFFI.modulemap" "${BUILD_FOLDER}/includes/yniffiFFI/module.modulemap"
 
 mkdir -p "${BUILD_FOLDER}/ios-simulator/release"
 echo "▸ Lipo (merge) x86 and arm simulator static libraries into a fat static binary"
