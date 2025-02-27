@@ -79,10 +79,10 @@ CFLAGS_x86_64_apple_darwin="-target x86_64-apple-darwin" \
 cargo build --target x86_64-apple-darwin --package "${PACKAGE_NAME}" --locked --release
 
 echo "▸ Building for aarch64-apple-ios-macabi"
-cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std,panic_abort --target aarch64-apple-ios-macabi --package "${PACKAGE_NAME}" --locked --release
+cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std --target aarch64-apple-ios-macabi --package "${PACKAGE_NAME}" --locked --release
 
 echo "▸ Building for x86_64-apple-ios-macabi"
-cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std,panic_abort --target x86_64-apple-ios-macabi --package "${PACKAGE_NAME}" --locked --release
+cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std --target x86_64-apple-ios-macabi --package "${PACKAGE_NAME}" --locked --release
 
 echo "▸ Consolidating the headers and modulemaps for XCFramework generation"
 mkdir -p "${BUILD_FOLDER}/includes/yniffiFFI"

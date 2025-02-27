@@ -6,9 +6,8 @@ edition = "2021"
 [profile.release]
 strip = true
 opt-level = "z"
-lto = true
+lto = false
 codegen-units = 1
-panic = "abort"
 
 [[bin]]
 name = "uniffi-bindgen"
@@ -18,10 +17,10 @@ required-features = ["uniffi/cli"]
 [dependencies]
 yrs = "0.18.2"
 thiserror = "1.0.38"
-uniffi = "0.27.1"
+uniffi = "0.28.2"
 
 [build-dependencies]
-uniffi = { version = "0.27.1", features = [ "build" ] }
+uniffi = { version = "0.28.2", features = [ "build" ] }
 
 [lib]
 name = "uniffi_yniffi"
