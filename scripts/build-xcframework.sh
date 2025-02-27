@@ -119,7 +119,9 @@ xcodebuild -create-xcframework \
     -headers "./${BUILD_FOLDER}/includes" \
     -library "./${BUILD_FOLDER}/ios-simulator/release/${LIB_NAME}" \
     -headers "./${BUILD_FOLDER}/includes" \
-    -library "./$BUILD_FOLDER/apple-darwin/release/$LIB_NAME" \
+    -library "./${BUILD_FOLDER}/apple-darwin/release/${LIB_NAME}" \
+    -headers "./${BUILD_FOLDER}/includes" \
+    -library "./$BUILD_FOLDER/apple-macabi/release/$LIB_NAME" \
     -headers "./${BUILD_FOLDER}/includes" \
     -output "./${XCFRAMEWORK_FOLDER}"
 
