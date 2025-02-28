@@ -50,8 +50,8 @@ if ProcessInfo.processInfo.environment["YSWIFT_LOCAL"] != nil {
 } else {
     FFIbinaryTarget = .binaryTarget(
             name: "yniffiFFI",
-            url: "https://github.com/siuying/yswift/releases/download/0.2.1g/yniffiFFI.xcframework.zip",
-            checksum: "9116902d558ea6c98a393cc93dcec0ac9531f48751503a00e9783c3b229abd3e"
+            url: "https://github.com/siuying/yswift/releases/download/0.2.1h/yniffiFFI.xcframework.zip",
+            checksum: "1c3a0834c8a9894f9d827a636ace34c80fb2741fe60271b0c5bd2c1b0ff91a43"
     )
 }
 
