@@ -84,9 +84,15 @@ cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std --target aarch64-apple-ios-macabi
 echo "▸ Building for x86_64-apple-ios-macabi"
 cargo "+${RUST_NIGHTLY}" build -Zbuild-std=std --target x86_64-apple-ios-macabi --package "${PACKAGE_NAME}" --locked --release
 
-# When integrating more than one Rust library statically, the linker will produce duplicate symbols error in Catalyst.
+# When integrating more than one Rust library statically, the linker will produce duplicate symbols error.
 # This is a ugly hack that mitigate the issue, by renaming offending symbols to alternative.
-# See https://github.com/rust-lang/rust/issues/44322#issuecomment-330059725 for the issue we workaround.
+# See https://github.com/rust-lang/rust/issues/44322
+archs_to_replace=(
+    "aarch64-apple-ios-sim"
+    "aarch64-apple-ios"
+    "aarch64-apple-ios-macabi"
+    "x86_64-apple-ios-macabi"
+)
 symbols_to_replace=(
     "_rust_eh_personality"
     "_rust_begin_unwind"
@@ -100,27 +106,18 @@ symbols_to_replace=(
     "___rdl_realloc"
     "___rdl_alloc_zeroed"
 )
-echo "▸ Patching aarch64-apple-ios-macabi"
-pushd "${BUILD_FOLDER}/aarch64-apple-ios-macabi/release"
-ar x ${LIB_NAME}
-for symbol in "${symbols_to_replace[@]}"; do
-    for file in $(ls *.rcgu.o); do
-        llvm-objcopy --redefine-sym=${symbol}=${symbol}_yjs ${file}
+for arch in "${archs_to_replace[@]}"; do
+    echo "▸ Renaming symbols for ${arch}"
+    pushd "${BUILD_FOLDER}/aarch64-apple-ios-macabi/release"
+    ar x ${LIB_NAME}
+    for symbol in "${symbols_to_replace[@]}"; do
+        for file in $(ls *.rcgu.o); do
+            llvm-objcopy --redefine-sym=${symbol}=${symbol}_yjs ${file}
+        done
     done
+    libtool -static -o ${LIB_NAME} *.o
+    popd
 done
-libtool -static -o ${LIB_NAME} *.o
-popd
-
-echo "▸ Patching x86_64-apple-ios-macabi"
-pushd "${BUILD_FOLDER}/x86_64-apple-ios-macabi/release"
-ar x ${LIB_NAME}
-for symbol in "${symbols_to_replace[@]}"; do
-    for file in $(ls *.rcgu.o); do
-        llvm-objcopy --redefine-sym=${symbol}=${symbol}_yjs ${file}
-    done
-done
-libtool -static -o ${LIB_NAME} *.o
-popd
 
 echo "▸ Consolidating the headers and modulemaps for XCFramework generation"
 mkdir -p "${BUILD_FOLDER}/includes/yniffiFFI"
